@@ -6,14 +6,12 @@ const useTodos = () => {
     return savedTodos ? JSON.parse(savedTodos) : [];
   });
 
-  const [filter, setFilter] = useState('all');
-
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
 
   const addTodo = (text) => {
-    setTodos([...todos, { id: Date.now(), text, completed: false }]);
+    setTodos([...todos, { id: Date.now(), text}]);
   }
 
   const editTodo = (id, newText) => {
@@ -28,28 +26,12 @@ const useTodos = () => {
     setTodos(todos.filter((todo) => todo.id !== id));
   }
 
-  const toggleTodo = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  }
-
-  const filteredTodos = todos.filter((todo) => {
-    if (filter === 'active') return !todo.completed;
-    if (filter === 'completed') return todo.completed;
-    return true;
-  });
 
   return {
-    todos: filteredTodos,
+    todos,
     addTodo,
     editTodo,
     deleteTodo,
-    toggleTodo,
-    filter,
-    setFilter
   }
 }
 
